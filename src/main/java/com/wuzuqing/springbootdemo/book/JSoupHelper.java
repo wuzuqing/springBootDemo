@@ -1,4 +1,4 @@
-package com.wuzuqing.springbootdemo.util;
+package com.wuzuqing.springbootdemo.book;
 
 
 import lombok.extern.slf4j.Slf4j;

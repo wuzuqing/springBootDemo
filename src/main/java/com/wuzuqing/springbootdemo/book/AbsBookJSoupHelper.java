@@ -1,16 +1,13 @@
-package com.wuzuqing.springbootdemo.util;
+package com.wuzuqing.springbootdemo.book;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/6/16.
