@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/ftl")
 public class FtlController {
 
     @RequestMapping("/index")
     public String index(Map<String,Object> map){
         map.put("name","吴祖清");
-        return "index";
+        return "ftlIndex";
     }
 }
