@@ -36,8 +36,8 @@ public class AndroidQuestAdd {
         return RespData.success(questionRepository.findByQuestionTag(questionTagBean));
     }
 
-    @GetMapping("/getAllTag/{tag}/{lastId}")
-    public RespData getQuestionByTag(@PathVariable("tag") String tag, @PathVariable("lastId") Integer lastId) {
+    @GetMapping("/getQuestionByTag")
+    public RespData getQuestionByTag(@RequestParam("tag") String tag, @RequestParam("lastId") Integer lastId) {
         QuestionTagBean questionTagBean = questionTagRepository.findQuestionTagBeanByTag(tag);
         return RespData.success(questionRepository.findByTagAndLastId(questionTagBean.getId(), lastId));
     }

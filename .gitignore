@@ -5,5 +5,10 @@
 # IntelliJ project files
 .idea
 *.iml
+/class
 out
 gen
+class/
+src/main/java/com/wuzuqing/springbootdemo/filter/
+src/test/
+target/
