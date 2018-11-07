@@ -12,7 +12,7 @@ public class RespData<T> {
 
     public RespData(T data) {
         if (data == null || (data instanceof List && ((List) data).isEmpty())) {
-            setParams(null, -1, "获取失败");
+            setParams(null, 100, "没有数据啦");
         } else {
             setParams(data, 100, "获取成功");
         }

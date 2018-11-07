@@ -11,6 +11,8 @@ import com.wuzuqing.springbootdemo.repository.primary.PrimaryQuestionTagReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+
 @RestController("/android")
 public class AndroidQuestAdd {
 
@@ -34,10 +36,15 @@ public class AndroidQuestAdd {
         return RespData.success(questionRepository.findByQuestionTag(questionTagBean));
     }
 
+    @GetMapping("/getAllTag/{tag}/{lastId}")
+    public RespData getQuestionByTag(@PathVariable("tag") String tag, @PathVariable("lastId") Integer lastId) {
+        QuestionTagBean questionTagBean = questionTagRepository.findQuestionTagBeanByTag(tag);
+        return RespData.success(questionRepository.findByTagAndLastId(questionTagBean.getId(), lastId));
+    }
 
     @PostMapping("/addQuestion")
     public RespData addQuest(@RequestParam("tag") String tag, @RequestParam("question") String question,
-                             @RequestParam("answer") String answer, @RequestParam("url") String url) {
+                             @RequestParam("answer") String answer, @RequestParam(name = "url", required = false) String url) {
         QuestionTagBean questionTagBean = questionTagRepository.findQuestionTagBeanByTag(tag);
         if (questionTagBean == null) {
             questionTagBean = new QuestionTagBean();
@@ -48,10 +55,16 @@ public class AndroidQuestAdd {
         QuestionBean questionBean = new QuestionBean();
         questionBean.setQuestion(question);
         questionBean.setQuestionTag(questionTagBean);
+        questionBean.setCreateDate(new Date(System.currentTimeMillis()));
         questionRepository.saveAndFlush(questionBean);
 
         AnswerBean answerBean = new AnswerBean();
         answerBean.setId(questionBean.getId());
+        int lastIndexOf = answer.lastIndexOf("作者：");
+        if (lastIndexOf != -1) {
+            answer = answer.substring(0, lastIndexOf);
+        }
+        answer = answer.replaceAll(" ", "\n");
         answerBean.setContent(answer);
         answerBean.setUrl(url);
 

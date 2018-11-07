@@ -3,6 +3,7 @@ package com.wuzuqing.springbootdemo.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -18,4 +19,5 @@ public class QuestionBean {
 
     private String question;
 
+    private Date createDate;
 }
