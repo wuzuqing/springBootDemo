@@ -24,10 +24,10 @@ public class BiXiaWenXue extends AbsDownload {
 
     public static void main(String[] args) {
         //6562
-        String path = "b/96/96125/";
-        String name = "网游之九转轮回";
-        int start = 4908276;
-        int end = 5146121;
+        String path = "/b/3/3465/";
+        String name = "神话版三国";
+        int start = 1746132;
+        int end = 2216379;
 
         AbsDownload biXiaWenXue = new BiXiaWenXue(path, name, start, end);
         biXiaWenXue.startDownload();
