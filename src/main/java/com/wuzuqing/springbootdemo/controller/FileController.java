@@ -1,6 +1,5 @@
 package com.wuzuqing.springbootdemo.controller;
 
-import com.wuzuqing.springbootdemo.util.ImgTools;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +16,10 @@ import java.util.UUID;
 @Controller
 public class FileController {
 
-    @RequestMapping("/")
-    public String index() {
-        return "index";
-    }
+//    @RequestMapping("/")
+//    public String index() {
+//        return "index";
+//    }
 
     @RequestMapping("/oneFile")
     public String oneFile() {

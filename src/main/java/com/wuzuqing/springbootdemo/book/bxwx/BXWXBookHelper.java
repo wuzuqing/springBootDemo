@@ -1,5 +1,6 @@
-package com.wuzuqing.springbootdemo.book;
+package com.wuzuqing.springbootdemo.book.bxwx;
 
+import com.wuzuqing.springbootdemo.book.AbsBookJSoupHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

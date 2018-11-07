@@ -30,13 +30,13 @@
 spring:
   datasource:
     primary:
-      url: jdbc:mysql://localhost:3306/test01?autoReconnect=true&useUnicode=true&useSSL=false
+      url: jdbc:mysql://120.79.16.93:3306/test1?useUnicode=true&characterEncoding=utf8&useSSL=true
       username: root
-      password: 123456
+      password: Wzq,./1991
     secondary:
-      url: jdbc:mysql://localhost:3306/test02?autoReconnect=true&useUnicode=true&useSSL=false
+      url: jdbc:mysql://120.79.16.93:3306/test2?useUnicode=true&characterEncoding=utf8&useSSL=true
       username: root
-      password: 123456
+      password: Wzq,./1991
   jpa:
     database: mysql
     generate-ddl: true

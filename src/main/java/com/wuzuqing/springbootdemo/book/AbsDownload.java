@@ -1,5 +1,6 @@
 package com.wuzuqing.springbootdemo.book;
 
+import com.wuzuqing.springbootdemo.book.bxwx.BXWXBookHelper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,7 +16,7 @@ import java.util.*;
 public abstract class AbsDownload {
     protected String host;
     protected String saveParent = "d://book/";
-    private String bookPath;
+    protected String bookPath;
     private static int startIndex;
     private int endIndex;
     private int MAX_POOL = 15;
@@ -23,7 +24,7 @@ public abstract class AbsDownload {
     private String bookName;
     private static int endCount;
     private boolean isHeBinging = false;
-    private TreeMap<String, BookCatalog> bookCatalogs;
+    protected TreeMap<String, BookCatalog> bookCatalogs;
 
 
     /**
@@ -88,7 +89,7 @@ public abstract class AbsDownload {
         start();
     }
 
-    private void start() {
+    protected void start() {
         if (bookCatalogs.isEmpty()) return;
         isHeBinging = false;
         endCount = 0;
@@ -117,9 +118,8 @@ public abstract class AbsDownload {
             public void anaylizeRootElement(Element rootElement) {
                 String path = rootElement.attr("href");
                 String title = rootElement.text();
-
-                if (!bookCatalogs.containsKey(path) && path.contains(bookPath)) {
-                    addCatalog(path, title, index);
+                if (checkPath(path)) {
+                    bookCatalogs.put(path, createCatalog(path, title, index));
                     index++;
                 }
             }
@@ -142,21 +142,22 @@ public abstract class AbsDownload {
         }
     }
 
+    protected boolean checkPath(String path) {
+        return !bookCatalogs.containsKey(path) && path.contains(bookPath);
+    }
+
     private void defaultCatalog() {
         int index = 1;
         for (int i = startIndex; i <= endIndex; i++) {
             String path = String.format("%s/%d.html", bookPath, i);
-            addCatalog(path, String.format("第%d章", index), index);
+            bookCatalogs.put(path, createCatalog(path, String.format("第%d章", index), index));
             index++;
         }
     }
 
-    private void addCatalog(String path, String title, int index) {
-        BookCatalog bookCatalog = new BookCatalog();
-        bookCatalog.setPath(path);
-        bookCatalog.setIndex(index);
-        bookCatalog.setTitle(title);
-        bookCatalogs.put(path, bookCatalog);
+
+    protected BookCatalog createCatalog(String path, String title, int index) {
+        return new BookCatalog(title, path, index);
     }
 
 
@@ -165,11 +166,15 @@ public abstract class AbsDownload {
      *
      * @return 解析器
      */
-    protected synchronized AbsBookJSoupHelper createHelper() {
+    private synchronized AbsBookJSoupHelper createHelper() {
         BookCatalog bookCatalog = bookCatalogs.remove(bookCatalogs.firstKey());
-        BXWXBookHelper helper = new BXWXBookHelper(bookFile, bookCatalog.getIndex());
+        AbsBookJSoupHelper helper = createHelper(bookFile, bookCatalog.getIndex());
         helper.setUrl(String.format("%s%s", host, bookCatalog.getPath()));
         return helper;
+    }
+
+    protected AbsBookJSoupHelper createHelper(File bookFile, int index) {
+        return new BXWXBookHelper(bookFile, index);
     }
 
     private synchronized void heBinging() {  //文件合并
@@ -206,6 +211,11 @@ public abstract class AbsDownload {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void printCatalog() {
+        if (bookCatalogs != null)
+            System.out.println("目录:" + bookCatalogs.toString());
     }
 
 }

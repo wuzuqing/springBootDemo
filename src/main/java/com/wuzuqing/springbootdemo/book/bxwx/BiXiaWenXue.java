@@ -1,4 +1,6 @@
-package com.wuzuqing.springbootdemo.book;
+package com.wuzuqing.springbootdemo.book.bxwx;
+
+import com.wuzuqing.springbootdemo.book.AbsDownload;
 
 public class BiXiaWenXue extends AbsDownload {
 
