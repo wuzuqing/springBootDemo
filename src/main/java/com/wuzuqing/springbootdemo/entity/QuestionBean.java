@@ -14,8 +14,9 @@ public class QuestionBean {
     private Integer id;
     @OneToOne
     private QuestionTagBean questionTag;
-    @OneToOne
-    private AnswerBean answer;
+
+//    @OneToOne
+//    private AnswerBean answer;
 
     private String question;
 
