@@ -2,6 +2,7 @@ package com.wuzuqing.springbootdemo.controller;
 
 
 import com.wuzuqing.springbootdemo.baseresp.RespData;
+import com.wuzuqing.springbootdemo.entity.AnswerBean;
 import com.wuzuqing.springbootdemo.entity.QuestionBean;
 import com.wuzuqing.springbootdemo.entity.QuestionTagBean;
 import com.wuzuqing.springbootdemo.repository.primary.PrimaryAnswerRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController("/android")
 public class AndroidQuestAdd {
@@ -35,6 +37,15 @@ public class AndroidQuestAdd {
     public RespData getQuestionByTag(@PathVariable("tag") String tag) {
         QuestionTagBean questionTagBean = questionTagRepository.findQuestionTagBeanByTag(tag);
         return RespData.success(questionRepository.findByQuestionTag(questionTagBean));
+    }
+
+    @GetMapping("/getAnswer")
+    public RespData getAnswer(@RequestParam(name = "questionId") Integer questionId) {
+        if (questionId < 0) {
+            return RespData.filed(-1, "没有该答案");
+        }
+        List<AnswerBean> answerBeans = answerRepository.getAnswerBeansByQuestionId(questionId);
+        return RespData.success(answerBeans);
     }
 
     @GetMapping("/getQuestionByTag")
@@ -69,19 +80,6 @@ public class AndroidQuestAdd {
         questionBean.setQuestionTag(questionTagBean);
         questionBean.setCreateDate(new Date(System.currentTimeMillis()));
         questionRepository.saveAndFlush(questionBean);
-
-//        AnswerBean answerBean = new AnswerBean();
-//        answerBean.setId(questionBean.getId());
-//        int lastIndexOf = answer.lastIndexOf("作者：");
-//        if (lastIndexOf != -1) {
-//            answer = answer.substring(0, lastIndexOf);
-//        }
-//        answer = answer.replaceAll(" ", "\n");
-//        answerBean.setContent(answer);
-//        answerBean.setUrl(url);
-//
-//        answerRepository.saveAndFlush(answerBean);
-//        questionBean.setAnswer(answerBean);
 
         questionRepository.save(questionBean);
 

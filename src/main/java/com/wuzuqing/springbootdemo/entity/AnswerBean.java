@@ -14,4 +14,5 @@ public class AnswerBean {
     private int id;
     private String content;
     private String url;
+    private Integer questionId;
 }
