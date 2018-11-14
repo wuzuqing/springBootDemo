@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @RestController("/android")
 public class AndroidQuestAdd {
@@ -46,7 +47,12 @@ public class AndroidQuestAdd {
             QuestionTagBean questionTagBean = questionTagRepository.findQuestionTagBeanByTag(tag);
             tagId = questionTagBean.getId();
         }
-        return RespData.success(questionRepository.findByTagAndLastId(tagId, lastId));
+        List<QuestionBean> questionBeans = questionRepository.findByTagAndLastId(tagId, lastId);
+        for (QuestionBean bean : questionBeans) {
+            bean.setQuestionTagStr(bean.getQuestionTag().getTag());
+            bean.setQuestionTag(null);
+        }
+        return RespData.success(questionBeans);
     }
 
     @PostMapping("/addQuestion")

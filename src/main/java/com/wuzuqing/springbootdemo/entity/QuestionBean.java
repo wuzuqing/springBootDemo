@@ -15,6 +15,8 @@ public class QuestionBean {
     @OneToOne
     private QuestionTagBean questionTag;
 
+    @Transient
+    private String questionTagStr;
 //    @OneToOne
 //    private AnswerBean answer;
 
