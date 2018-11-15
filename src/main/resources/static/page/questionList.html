@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>问题管理</title>
+</head>
+<body>
+<h1>问题添加</h1>
+<form action="/example/addQuestion" method="post" role="form" target="iframe_display">
+    <div>
+        标签 <input type="text" name="tag" value="android基础"/>
+    </div>
+    <br>
+    <div>
+        问题 <input type="text" name="question" value="" style="height: 50px;width: 400px"/>
+    </div>
+    <br>
+    <div>
+        链接 <input type="text" name="url" value=""/>
+    </div>
+    <br>
+    <div>
+        <input type="submit" value="新增" />
+    </div>
+
+</form>
+
+
+<!--
+style="display: none;"
+style="display: none;"
+-->
+<iframe id="iframe_display" name="iframe_display" ></iframe>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<link href="http://sdk-release.qnsdk.com/qiniuplayer-0.3.9.min.css" rel="stylesheet">
+<script src="http://sdk-release.qnsdk.com/qiniuplayer-0.3.9.min.js"></script>
+<head><title>Qiniu Web Player in HTML5</title></head>
+<body>
+<h1>Qiniu Web Player</h1>
+<div style="width: 640px; height: 480px;">
+    <video class="video-js" id="demo-video"></video>
+</div>
+<script>
+
+    var options =
+
+        {
+            engineOrder : ['html5','flash'],
+            autoplay    : true,
+            preload     : 'auto',
+            controls    : true,
+            poster      : 'https://player.qiniucc.com/qiniu-620x205.png',
+            url: 'http://pili-live-rtmp.lboog.com/lboog/lblive23335',
+            type          : 'flv'
+        }
+    var player = new QiniuPlayer('demo-video', options);
+    player.ready(() => {
+        player.on('timeupdate', () => {
+            console.log('player update');
+        });
+    });
+
+</script>
+</body>
+</html>
