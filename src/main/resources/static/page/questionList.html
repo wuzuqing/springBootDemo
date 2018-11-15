@@ -2,11 +2,66 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>问题管理</title>
+    <meta http-equiv="Content-Type" Content="text/html; Charset=utf-8">
+    <title>问题列表</title>
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+
+
+    <script>
+        let tags;
+        function testNetRequest() {
+            const url3 = 'http://localhost:9090/example/getAllTag';
+            $.getJSON(url3, function (data) {
+                tags = data.data
+                let tabStr = "";
+                $.each(tags, function (i, tag) {
+                    tabStr += "<button onclick='function clickTag() {  alert(\"Error\");  }'>" + tag.tag + "</button>";
+                });
+                $('#tag').html(tabStr);
+            });
+
+            // $.ajax({
+            //     url: url3,
+            //     type: "GET",
+            //     dataType:'json',
+            //     success:function(data){
+            //         $('#listD').append('<p>interval:'+data.data[0].tag+'</p>')
+            //         //alert("22");    
+            //     },
+            //     error:function(er){
+            //         //alert("11");
+            //         alert("Error");
+            //     }
+            // });
+        }
+
+
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("nav").find("button").click(function () {
+                alert("Error");
+            })
+            testNetRequest();
+        });
+    </script>
 </head>
 <body>
-<h1>问题添加</h1>
-<form action="/example/addQuestion" method="post" role="form" target="iframe_display">
+<h1>问题列表</h1>
+
+<nav id="tag">
+
+</nav>
+<div id="listD"></div>
+<ol id="list">
+
+</ol>
+
+<button>显示 href 属性的值</button>
+
+<!--<form action="/example/addQuestion" method="post" role="form" target="iframe_display">
     <div>
         标签 <input type="text" name="tag" value="android基础"/>
     </div>
@@ -23,13 +78,13 @@
         <input type="submit" value="新增" />
     </div>
 
-</form>
+</form>-->
 
 
 <!--
 style="display: none;"
 style="display: none;"
 -->
-<iframe id="iframe_display" name="iframe_display" ></iframe>
+<iframe id="iframe_display" name="iframe_display"></iframe>
 </body>
 </html>
