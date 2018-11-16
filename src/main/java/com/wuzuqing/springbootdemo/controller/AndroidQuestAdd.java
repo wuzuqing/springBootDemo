@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController("/android")
 public class AndroidQuestAdd {
@@ -84,5 +83,15 @@ public class AndroidQuestAdd {
         questionRepository.save(questionBean);
 
         return RespData.success(questionBean);
+    }
+
+    @PostMapping("/addAnswer")
+    public RespData addAnswer(@RequestParam("questionId") Integer questionId, @RequestParam("answer") String answer, @RequestParam(value = "url",required = false) String url) {
+        AnswerBean answerBean = new AnswerBean();
+        answerBean.setUrl(url);
+        answerBean.setContent(answer);
+        answerBean.setQuestionId(questionId);
+        answerRepository.saveAndFlush(answerBean);
+        return RespData.success(answerBean);
     }
 }

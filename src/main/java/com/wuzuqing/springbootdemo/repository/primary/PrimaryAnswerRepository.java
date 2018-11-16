@@ -12,4 +12,6 @@ import java.util.List;
 public interface PrimaryAnswerRepository extends JpaRepository<AnswerBean, Integer> {
 
     List<AnswerBean> getAnswerBeansByQuestionId(Integer questionId);
+
+
 }

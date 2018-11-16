@@ -10,81 +10,217 @@
 
     <script>
         let tags;
-        function testNetRequest() {
-            const url3 = 'http://localhost:9090/example/getAllTag';
+        let questionListByTag = new Map();
+        let currentTagIndex = -1;
+        let host = "";
+        // let host = "http://localhost:9090";
+        function getAllTag() {
+            const url3 =  host +'/example/getAllTag';
             $.getJSON(url3, function (data) {
                 tags = data.data
                 let tabStr = "";
-                $.each(tags, function (i, tag) {
-                    tabStr += "<button onclick='function clickTag() {  alert(\"Error\");  }'>" + tag.tag + "</button>";
+                $.each(tags, function (pos, tag) {
+                    tabStr += "<li value='" + pos + "' onclick=clickTag(this) ><span>" + tag.tag + "</span></li>";
                 });
-                $('#tag').html(tabStr);
+                $('#menu #tagList').html(tabStr);
             });
-
-            // $.ajax({
-            //     url: url3,
-            //     type: "GET",
-            //     dataType:'json',
-            //     success:function(data){
-            //         $('#listD').append('<p>interval:'+data.data[0].tag+'</p>')
-            //         //alert("22");    
-            //     },
-            //     error:function(er){
-            //         //alert("11");
-            //         alert("Error");
-            //     }
-            // });
         }
 
+        function submit() {
+            $("#submitAnswer").click(
+                function () {
+                    let answer = $("#answer").val();
+                  let questionId =  $(".questionLiClick").data("questionId");
+                    if (answer) {
+                        $.post(host+"/example/addAnswer",
+                            {
+                                questionId:questionId,
+                                answer:answer,
+                                url:""
+                            },
+                            function(data){
 
+                                $("#answer").val("")
+                            });
+                    }else{
+                        alert("答案不能为空");
+                        console.log("答案不能为空")
+                    }
+                }
+            )
+        }
+
+        function refreshState(obj) {
+            $(".tagLiClick").removeClass("tagLiClick")
+            $(obj).addClass("tagLiClick")
+            currentTagIndex = obj.index;
+        }
+
+        function getQuestionList(index) {
+            let tag = tags[index].tag;
+            if (questionListByTag.get(tag)) {
+                showQuestionList(tag, questionListByTag.get(tag))
+                return;
+            }
+            const url3 = host+'/example/getQuestionByTag/' + tag;
+            $('#questionList').html("")
+            $.getJSON(url3, function (data) {
+                questionListByTag.set(tag, data.data)
+                showQuestionList(tag, data.data)
+            });
+        }
+
+        function showQuestionList(tag, questionList) {
+            let tabStr = "";
+            $.each(questionList, function (i, question) {
+                tabStr += "<li data-question = '" + question.question + "' data-question-id = '" + question.id + "' onclick='clickQuestion(this)'><span>" + (i + 1) + "." + question.question + "</span></li>";
+            });
+            $('#questionList').html(tabStr);
+        }
+
+        function clickTag(obj) {
+            if (currentTagIndex == obj.value) {
+                return;
+            }
+            refreshState(obj);
+            getQuestionList(obj.value)
+        }
+
+        function clickQuestion(obj) {
+            let that = $(obj)
+            if (that.attr("data_chick")) {
+                return;
+            }
+            that.data("check", true)
+            $(".questionLiClick").removeClass("questionLiClick")
+            that.addClass("questionLiClick")
+            $("#que h3").html("问题:" + $(obj).data("question"))
+            $("#answer").val("")
+        }
     </script>
 
     <script>
-        $(document).ready(function(){
-            $("nav").find("button").click(function () {
-                alert("Error");
-            })
-            testNetRequest();
+        $(document).ready(function () {
+            getAllTag();
+            submit();
         });
     </script>
+
+    <style>
+        ol {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #container {
+            background-color: aquamarine;
+            height: 600px;
+            padding: 6px;
+        }
+
+        .float {
+            float: left;
+        }
+
+        #menu {
+            height: 100%;
+            width: 120px;
+            text-align: center;
+            background-color: azure;
+        }
+
+        #tagList {
+            height: 40px;
+
+        }
+
+        .tagLiClick {
+            background-color: sienna;
+        }
+
+        #tagList li:hover {
+            background-color: sienna;
+        }
+
+        #tagList li span {
+            line-height: 40px;
+        }
+
+        #question {
+            width: 420px;
+            margin-left: 12px;
+            height: 100%;
+            overflow: auto;
+            overflow-x: hidden;
+            background-color: lightpink;
+        }
+
+        #tagList {
+            height: 60px;
+        }
+
+        #questionList li {
+            height: auto;
+            word-break: break-all;
+            word-wrap: break-word;
+
+            padding: 8px;
+            border-bottom: double 1px;
+        }
+
+        #answerContainer {
+            background-color: #FFD700;
+            width: 600px;
+            height: 576px;
+            margin-left: 12px;
+            padding: 12px;
+        }
+
+        .questionLiClick {
+            background-color: purple;
+        }
+
+        #que {
+            height: 60px;
+        }
+
+        #answer {
+            width: 576px;
+            height: 460px;
+        }
+
+    </style>
 </head>
 <body>
 <h1>问题列表</h1>
 
-<nav id="tag">
+<div id="container">
 
-</nav>
-<div id="listD"></div>
-<ol id="list">
+    <div id="menu" class="float">
+        <ol id="tagList">
 
-</ol>
-
-<button>显示 href 属性的值</button>
-
-<!--<form action="/example/addQuestion" method="post" role="form" target="iframe_display">
-    <div>
-        标签 <input type="text" name="tag" value="android基础"/>
-    </div>
-    <br>
-    <div>
-        问题 <input type="text" name="question" value="" style="height: 50px;width: 400px"/>
-    </div>
-    <br>
-    <div>
-        链接 <input type="text" name="url" value=""/>
-    </div>
-    <br>
-    <div>
-        <input type="submit" value="新增" />
+        </ol>
     </div>
 
-</form>-->
+    <div id="question" class="float">
+        <ol id="questionList">
+        </ol>
+    </div>
+    <div id="answerContainer" class="float">
+        <div id="que"><h3></h3></div>
+        <div>
+            <textarea name="answerN" id="answer" style="vertical-align:top;outline:none;"></textarea>
 
+        </div>
+        <div>
+            <button id="submitAnswer">提交答案</button>
+        </div>
+    </div>
 
-<!--
-style="display: none;"
-style="display: none;"
--->
-<iframe id="iframe_display" name="iframe_display"></iframe>
+    <div id="footer" style="clear:both;">
+    </div>
+</div>
+
 </body>
 </html>
