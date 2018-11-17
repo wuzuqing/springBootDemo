@@ -25,16 +25,16 @@
 #    testOnReturn: false
 #    poolPreparedStatements: false
 #    max-pool-prepared-statement-per-connection-size: 20
-#    logSlowSql: true
+#    logSlowSql: true  &useSSL=true
 
 spring:
   datasource:
     primary:
-      url: jdbc:mysql://120.79.16.93:3306/test1?useUnicode=true&characterEncoding=utf8&useSSL=true
+      url: jdbc:mysql://120.79.16.93:17951/test1?useUnicode=true&characterEncoding=utf8&useSSL=false
       username: root
       password: Wzq,./1991
     secondary:
-      url: jdbc:mysql://120.79.16.93:3306/test2?useUnicode=true&characterEncoding=utf8&useSSL=true
+      url: jdbc:mysql://120.79.16.93:17951/test2?useUnicode=true&characterEncoding=utf8&useSSL=false
       username: root
       password: Wzq,./1991
   jpa:

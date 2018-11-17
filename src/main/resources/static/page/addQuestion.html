@@ -3,33 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>问题管理</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        function submit() {
+            let tag = $("#tag").val();
+            let question = $("#question").val();
+            if (!question) {
+                return;
+            }
+            let host = "";
+            $.post(host+"/example/addQuestion",
+                {
+                    tag:tag,
+                    question:question,
+                },
+                function(data){
+                    $("#question").val("")
+                });
+        }
+    </script>
 </head>
 <body>
 <h1>问题添加</h1>
 <form action="/example/addQuestion" method="post" role="form" target="iframe_display">
     <div>
-        标签 <input type="text" name="tag" value="android基础"/>
+        标签 <input type="text" id="tag" value="android基础"/>
     </div>
     <br>
     <div>
-        问题 <input type="text" name="question" value="" style="height: 50px;width: 400px"/>
+        问题 <input id="question" type="text" value="" style="height: 50px;width: 400px"/>
     </div>
     <br>
     <div>
-        链接 <input type="text" name="url" value=""/>
+        链接 <input id="url" type="text" value=""/>
     </div>
     <br>
-    <div>
-        <input type="submit" value="新增" />
-    </div>
+
 
 </form>
-
+<div>
+    <button onclick="submit()">提交</button>
+</div>
 
 <!--
 style="display: none;"
 style="display: none;"
 -->
-<iframe id="iframe_display" name="iframe_display" ></iframe>
+<iframe id="iframe_display" name="iframe_display"></iframe>
 </body>
 </html>
