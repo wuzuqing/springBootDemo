@@ -1,5 +1,7 @@
 package com.wuzuqing.springbootdemo.baseresp;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class RespData<T> {
 
 
     public static <T> RespData<T> success(T data) {
-        return new RespData(data);
+        return new RespData(JSON.toJSON(data));
     }
 
     public static RespData filed(int code, String msg) {

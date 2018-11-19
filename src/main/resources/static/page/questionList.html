@@ -13,7 +13,7 @@
         let questionListByTag = new Map();
         let currentTagIndex = -1;
         let host = "";
-        // let host = "http://localhost:9090";
+        // let host = "http://127.0.0.1:17912";
         function getAllTag() {
             const url3 =  host +'/example/getAllTag';
             $.getJSON(url3, function (data) {
@@ -31,15 +31,16 @@
                 function () {
                     let answer = $("#answer").val();
                   let questionId =  $(".questionLiClick").data("questionId");
+                  let answerId =  $(".questionLiClick").data("answerId");
                     if (answer) {
                         $.post(host+"/example/addAnswer",
                             {
                                 questionId:questionId,
+                                answerId:answerId,
                                 answer:answer,
                                 url:""
                             },
                             function(data){
-
                                 $("#answer").val("")
                             });
                     }else{
@@ -86,16 +87,37 @@
             getQuestionList(obj.value)
         }
 
+
+        function getAnswer(obj) {
+            const url3 = host+'/example/getAnswer?questionId='+$(obj).data("questionId") ;
+            $.get( url3 ,function (data) {
+                let list = data.data;
+                let tabStr = "";
+                if (list){
+                    if (list.length==1){
+                        $("#answer").val(list[0].content);
+                        $(obj).data("answerId",list[0].id);
+                    } else{
+                        $.each(list, function (pos, item) {
+                            tabStr += (item.content+"\n");
+                        });
+                        $("#answer").val(tabStr)
+                    }
+                } else{
+                    $("#answer").val(tabStr)
+                }
+            });
+        }
         function clickQuestion(obj) {
-            let that = $(obj)
+            let that = $(obj);
             if (that.attr("data_chick")) {
                 return;
             }
-            that.data("check", true)
-            $(".questionLiClick").removeClass("questionLiClick")
-            that.addClass("questionLiClick")
-            $("#que h3").html("问题:" + $(obj).data("question"))
-            $("#answer").val("")
+            that.data("check", true);
+            $(".questionLiClick").removeClass("questionLiClick");
+            that.addClass("questionLiClick");
+            $("#que h3").html("问题:" + $(obj).data("question"));
+            getAnswer(obj);
         }
     </script>
 

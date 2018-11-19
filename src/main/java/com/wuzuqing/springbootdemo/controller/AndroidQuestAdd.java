@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController("/android")
 public class AndroidQuestAdd {
@@ -86,11 +87,21 @@ public class AndroidQuestAdd {
     }
 
     @PostMapping("/addAnswer")
-    public RespData addAnswer(@RequestParam("questionId") Integer questionId, @RequestParam("answer") String answer, @RequestParam(value = "url",required = false) String url) {
-        AnswerBean answerBean = new AnswerBean();
+    public RespData addAnswer(@RequestParam("questionId") Integer questionId, @RequestParam("answer") String answer,
+                              @RequestParam(value = "answerId", required = false) Integer answerId,
+                              @RequestParam(value = "url", required = false) String url) {
+        AnswerBean answerBean = null;
+        if (answerId != null) {
+            Optional<AnswerBean> answerBeanQ = answerRepository.findById(answerId);
+            if (answerBeanQ.get() != null) {
+                answerBean = answerBeanQ.get();
+            }
+        } else {
+            answerBean = new AnswerBean();
+            answerBean.setQuestionId(questionId);
+        }
         answerBean.setUrl(url);
         answerBean.setContent(answer);
-        answerBean.setQuestionId(questionId);
         answerRepository.saveAndFlush(answerBean);
         return RespData.success(answerBean);
     }
