@@ -1,19 +1,13 @@
 package com.wuzuqing.springbootdemo.util;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) {
-        HashMap map;
-        System.out.println("Welcome to OpenCV " + Core.VERSION);
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        Mat m  = Mat.eye(3, 3, CvType.CV_8UC1);
-        System.out.println("m = " + m.dump());
+        int value = 3;
+        String valueStr = String.format("%03d", value);
+        System.out.println(valueStr+" / "+ Arrays.toString(valueStr.getBytes()));
     }
 
 }
